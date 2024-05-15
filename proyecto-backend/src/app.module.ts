@@ -1,11 +1,12 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { TestController } from './controllers/Test.controller';
 import { TestService } from './services/test.service';
 import { JwtModule } from '@nestjs/jwt';
 import { LoginController } from './controllers/login.controller';
 import { LoginService } from './services/login.service';
+import { AdministradorModule } from './administrador/administrador.module';
+import { CommonModule } from './common/common.module';
+import { UsuarioModule } from './usuario/usuario.module';
 
 @Module({
   imports: [
@@ -13,8 +14,11 @@ import { LoginService } from './services/login.service';
       secret: 'ClaveUltraSecreta',
       signOptions: {expiresIn: '1h'},
     }),
+    AdministradorModule,
+    CommonModule,
+    UsuarioModule,
   ],
-  controllers: [AppController, TestController, LoginController],
-  providers: [AppService, TestService, LoginService],
+  controllers: [TestController, LoginController],
+  providers: [TestService, LoginService],
 })
 export class AppModule {}
