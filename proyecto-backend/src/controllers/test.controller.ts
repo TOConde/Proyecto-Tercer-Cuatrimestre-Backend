@@ -1,3 +1,4 @@
+/*
 import {
   Controller,
   Get  
@@ -14,3 +15,4 @@ export class TestController {
     return this.testService.getTest();
   }
 }
+*/
