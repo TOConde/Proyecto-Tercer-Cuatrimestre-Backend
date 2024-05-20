@@ -19,11 +19,6 @@ create table if not exists usuarios (
 	constraint FK_usuarios_roles foreign key (rolID) references roles(rolID)
 );
 
-insert into roles (codigo, nombre) values ('ADM', 'Administrador');
-insert into roles (codigo, nombre) values ('USR', 'Usuario');
-
-insert into usuarios (email, password, activo, rolID) values ('flixoramaADM@flix.com', 'admin', 1, 1);
-
 select * from usuarios;
 
 select * from roles;
