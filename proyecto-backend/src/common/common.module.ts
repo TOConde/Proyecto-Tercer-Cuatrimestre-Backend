@@ -2,9 +2,8 @@ import { Module } from '@nestjs/common';
 import { LoginController } from './controllers/login.controller';
 import { LoginService } from './services/login.service';
 import { DatabaseService } from './services/db.service';
-import { UsuarioService } from 'src/usuario/usuario.service';
 import { JwtModule } from '@nestjs/jwt';
-
+import { JwtMiddlewareGuard } from './middleware/auth-guard';
 
 @Module({
   imports: [
@@ -14,6 +13,7 @@ import { JwtModule } from '@nestjs/jwt';
     }),
   ],
   controllers: [LoginController],
-  providers: [LoginService, DatabaseService, UsuarioService]
+  providers: [LoginService, DatabaseService, JwtMiddlewareGuard],
+  exports: [DatabaseService, JwtMiddlewareGuard, JwtModule]
 })
 export class CommonModule {}

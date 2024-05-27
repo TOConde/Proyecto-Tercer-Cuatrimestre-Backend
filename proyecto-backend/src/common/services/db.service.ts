@@ -4,11 +4,11 @@ import { FieldPacket, Pool, PoolConnection, ResultSetHeader, RowDataPacket, crea
 @Injectable()
 export class DatabaseService {
     private pool: Pool;
-    constructor () {
+    constructor() {
         this.pool = createPool({
             port: 3306,
             user: 'root',
-            password: 'root', 
+            password: 'root',
             database: 'flixoramadb',
             host: 'localhost',
             connectionLimit: 10
