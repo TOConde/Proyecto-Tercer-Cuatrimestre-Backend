@@ -21,6 +21,10 @@ export class JwtMiddlewareGuard implements CanActivate{
     if (!decodedToken) {
       return false;
     }
+    if ( new Date(decodedToken.exp * 1000) < new Date()) {
+      return false;
+    }
+    console.log(decodedToken.exp);
     request.user = decodedToken;
     return true;
   }
