@@ -22,3 +22,13 @@ create table if not exists usuarios (
 select * from usuarios;
 
 select * from roles;
+
+create table if not exists peliculas (
+	peliculaID INTEGER auto_increment,
+	titulo VARCHAR(100),
+	sinopsis VARCHAR(500),
+	url_image VARCHAR NULL,
+	url_image_delete VARCHAR NULL,
+	display_url_image VARCHAR NULL,
+	primary key (peliculaID)
+)
