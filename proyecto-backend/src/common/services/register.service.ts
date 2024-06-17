@@ -1,6 +1,5 @@
 import { Injectable } from "@nestjs/common";
 import { DatabaseService } from "./db.service";
-import { ResultSetHeader } from "mysql2";
 import userQueries from "src/usuario/queries/user.queries";
 import * as bcrypt from 'bcrypt';
 
