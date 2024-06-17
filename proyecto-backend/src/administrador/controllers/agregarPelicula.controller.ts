@@ -1,11 +1,18 @@
-import { BadRequestException, Body, Controller, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { 
+  BadRequestException,
+  Body,
+  Controller,
+  Post,
+  UploadedFile,
+  UseInterceptors
+} from '@nestjs/common';
+
 import { AgregarPeliculaService } from '../services/agregarPelicula.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('/pelicula')
 export class AgregarPeliculaController {
   constructor(private agregarPeliculaService: AgregarPeliculaService) { }
-
 
   @Post('/upload')
   @UseInterceptors(FileInterceptor('img'))
@@ -25,6 +32,7 @@ export class AgregarPeliculaController {
       sinopsis: body.sinopsis,
       img: file,
     };
+
     try {
       const result = await this.agregarPeliculaService.agregarPelicula(pelicula);
       return { message: `${result} se ha agregado con éxito!` };

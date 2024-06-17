@@ -1,9 +1,7 @@
-import { Injectable, InternalServerErrorException } from "@nestjs/common";
+import { BadRequestException, Injectable, InternalServerErrorException } from "@nestjs/common";
 import { DatabaseService } from '../../common/services/db.service'
 import adminQueries from "../queries/admin.queries";
 import { ImageService } from "./image.service";
-
-
 
 @Injectable()
 export class AgregarPeliculaService {
@@ -13,12 +11,16 @@ export class AgregarPeliculaService {
   ) {}
 
   async agregarPelicula(pelicula: any): Promise<string> {
-    let imagenPelicula = await this.imageService.upload(pelicula.img)
+    if (!pelicula.titulo || !pelicula.sinopsis || !pelicula.img) {
+      throw new BadRequestException('Falta el titulo, la sinopsis o la imagen de la Pelicula');
+    }
+
+    let imagenPelicula: any
 
     try {
-      imagenPelicula = await this.imageService.upload(pelicula.img);
+      imagenPelicula = await this.imageService.upload(pelicula.img, pelicula.titulo);
     } catch (error) {
-      throw new InternalServerErrorException('Error uploading image');
+      throw new InternalServerErrorException('Error al cargar la imagen');
     }
 
     try {
