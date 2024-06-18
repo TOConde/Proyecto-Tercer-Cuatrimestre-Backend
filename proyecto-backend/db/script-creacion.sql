@@ -19,16 +19,43 @@ create table if not exists usuarios (
 	constraint FK_usuarios_roles foreign key (rolID) references roles(rolID)
 );
 
-select * from usuarios;
-
-select * from roles;
-
 create table if not exists peliculas (
-	peliculaID INTEGER auto_increment,
-	titulo VARCHAR(100),
-	sinopsis VARCHAR(500),
-	url_image VARCHAR NULL,
-	url_image_delete VARCHAR NULL,
-	display_url_image VARCHAR NULL,
-	primary key (peliculaID)
-)
+    peliculaID INTEGER auto_increment,
+    titulo VARCHAR(100) not NULL,
+    sinopsis TEXT not NULL,
+    fechaEstreno DATE,
+    duracion INTEGER,
+    urlVideo VARCHAR(255),
+    url_image VARCHAR(255) not NULL,
+    url_image_delete VARCHAR(255) not NULL,
+    display_url_image VARCHAR(255) not NULL,
+    primary key (peliculaID)
+);
+
+create table if not exists generos (
+    generoID INTEGER AUTO_INCREMENT,
+    nombreGenero VARCHAR(50) NOT NULL,
+    primary key (generoID)
+);
+
+create table if not exists actores (
+    actorID INTEGER AUTO_INCREMENT,
+    nombreActor VARCHAR(50) NOT NULL,
+    primary key (actorID)
+);
+
+create table if not exists pelicula_generos (
+    peliculaID INTEGER,
+    generoID INTEGER,
+    primary key (peliculaID, generoID),
+    CONSTRAINT FK_GenPel_Pelicula FOREIGN KEY (peliculaID) REFERENCES peliculas(peliculaID),
+    CONSTRAINT FK_GenPel_Genero FOREIGN KEY (generoID) REFERENCES generos(generoID)    
+);
+
+create table if not exists pelicula_actores (
+    peliculaID INTEGER,
+    actorID INTEGER,
+    primary key (peliculaID, actorID),
+    CONSTRAINT FK_ActPel_Pelicula FOREIGN KEY (peliculaID) REFERENCES peliculas(peliculaID),
+    CONSTRAINT FK_ActPel_Actor FOREIGN KEY (actorID) REFERENCES actores(actorID)
+);
