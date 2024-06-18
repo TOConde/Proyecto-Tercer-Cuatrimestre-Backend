@@ -2,6 +2,8 @@ import { BadRequestException, Injectable, InternalServerErrorException } from "@
 import { DatabaseService } from '../../common/services/db.service'
 import adminQueries from "../queries/admin.queries";
 import { ImageService } from "./image.service";
+import { RowDataPacket } from "mysql2";
+import userQueries from "src/usuario/queries/user.queries";
 
 @Injectable()
 export class AgregarPeliculaService {
@@ -27,6 +29,8 @@ export class AgregarPeliculaService {
       await this.dbService.executeQuery(adminQueries.agregarPelicula, [
         pelicula.titulo,
         pelicula.sinopsis,
+        pelicula.duracion,
+        pelicula.fechaEstreno,
         imagenPelicula.data.url,
         imagenPelicula.data.delete_url,
         imagenPelicula.data.display_url,
@@ -37,4 +41,13 @@ export class AgregarPeliculaService {
 
     return pelicula.titulo;
   }
+
+  async getGeneros() {
+    const resultQuery: RowDataPacket[] = await this.dbService.executeSelect(
+        adminQueries.selectAllGeneros,
+        []);
+    return resultQuery;
+  }
+  
 }
+
