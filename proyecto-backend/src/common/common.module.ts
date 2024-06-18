@@ -6,6 +6,8 @@ import { JwtModule } from '@nestjs/jwt';
 import { JwtMiddlewareGuard } from './middleware/auth-guard';
 import { RegisterController } from './controllers/register.controller';
 import { RegisterService } from './services/register.service';
+import { BrowsePeliculasController } from './controllers/browsePeliculas.controller';
+import { BrowsePeliculasService } from './services/browserPeliculas.service';
 
 @Module({
   imports: [
@@ -14,8 +16,8 @@ import { RegisterService } from './services/register.service';
       signOptions: {expiresIn: '1h'},
     }),
   ],
-  controllers: [LoginController, RegisterController],
-  providers: [LoginService, RegisterService, DatabaseService, JwtMiddlewareGuard],
+  controllers: [LoginController, RegisterController, BrowsePeliculasController],
+  providers: [LoginService, RegisterService, BrowsePeliculasService, DatabaseService, JwtMiddlewareGuard],
   exports: [DatabaseService, JwtMiddlewareGuard, JwtModule]
 })
 export class CommonModule {}
