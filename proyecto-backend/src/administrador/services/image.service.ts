@@ -11,7 +11,7 @@ export class ImageService {
   async upload(file: Express.Multer.File, tituloPelicula: string) {
     const formdata: FormData = new FormData();
     
-    formdata.append('image',file.buffer, { filename: file.originalname });
+    formdata.append('image', file.buffer, { filename: file.originalname });
     formdata.append('key', key);
     formdata.append('name', tituloPelicula);
 
