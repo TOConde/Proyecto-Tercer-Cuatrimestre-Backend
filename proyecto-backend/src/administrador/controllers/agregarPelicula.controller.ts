@@ -19,7 +19,7 @@ export class AgregarPeliculaController {
   @UseInterceptors(FileInterceptor('img'))
   async agregarPelicula(
     @UploadedFile() file: Express.Multer.File,
-    @Body() body: { titulo: string, sinopsis: string, duracion: number, fechaEstreno: Date}
+    @Body() body: { titulo: string, sinopsis: string, duracion: number, fechaEstreno: Date, generos: string}
   ): Promise<{ message: string }> {
     if (!file) {
       throw new BadRequestException('Inserte una imagen');
@@ -27,6 +27,8 @@ export class AgregarPeliculaController {
     if (!body.titulo || !body.sinopsis) {
       throw new BadRequestException('Inserte un titulo y sinopsis');
     }
+
+    const generos = JSON.parse(body.generos);
 
     const pelicula = {
       titulo: body.titulo,
@@ -37,7 +39,7 @@ export class AgregarPeliculaController {
     };
 
     try {
-      const result = await this.agregarPeliculaService.agregarPelicula(pelicula);
+      const result = await this.agregarPeliculaService.agregarPelicula(pelicula, generos);
       return { message: `${result} se ha agregado con éxito!` };
     } catch (error) {
       throw new BadRequestException('Error al agregar la pelicula')
