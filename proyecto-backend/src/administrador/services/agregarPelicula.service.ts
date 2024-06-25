@@ -12,8 +12,8 @@ export class AgregarPeliculaService {
   ) {}
 
   async agregarPelicula(pelicula: any, generos: number[]): Promise<string> {
-    if (!pelicula.titulo || !pelicula.sinopsis || !pelicula.img) {
-      throw new BadRequestException('Falta el titulo, la sinopsis o la imagen de la Pelicula');
+    if (!pelicula.titulo || !pelicula.sinopsis || !pelicula.duracion || !pelicula.fechaEstreno || !pelicula.urlVideo) {
+      throw new BadRequestException('Faltan completar campos en el form');
     }
 
     let imagenPelicula: any
@@ -30,14 +30,13 @@ export class AgregarPeliculaService {
         pelicula.sinopsis,
         pelicula.duracion,
         pelicula.fechaEstreno,
+        pelicula.urlVideo,
         imagenPelicula.data.url,
         imagenPelicula.data.delete_url,
         imagenPelicula.data.display_url,
       ]);
 
       const peliculaID = result.insertId;
-
-      console.log(peliculaID);
 
       for (const generoID of generos) {
         await this.dbService.executeQuery(adminQueries.agregarGeneroPelicula, [
