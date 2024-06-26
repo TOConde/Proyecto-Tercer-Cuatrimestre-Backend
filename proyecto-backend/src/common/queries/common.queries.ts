@@ -1,5 +1,8 @@
 const commonQueries = {
   selectAllMovies: 'select peliculaID, titulo, sinopsis, fechaEstreno, duracion, urlVideo, url_image, url_image_delete, display_url_image from peliculas;',
+
+  deletePeliculaGenero: 'delete from pelicula_generos where peliculaID = ?;',
+  deleteMovie: 'delete from peliculas where peliculaID = ?;'
 }
 
 export default commonQueries;
