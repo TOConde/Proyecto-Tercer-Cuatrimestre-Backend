@@ -12,6 +12,9 @@ export class PeliculasController {
 
     @Delete(':id')
     async deleteMovie(@Param('id') id: string) {
-        return await this.peliculasService.deleteMovie(Number(id));
+        const pelicula = await this.peliculasService.getById(Number(id));
+        const url_image_delete = pelicula.url_image_delete;
+
+        return await this.peliculasService.deleteMovie(Number(id), url_image_delete);
     }
 }

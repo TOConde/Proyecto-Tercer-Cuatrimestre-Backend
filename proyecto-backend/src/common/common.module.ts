@@ -8,6 +8,8 @@ import { RegisterController } from './controllers/register.controller';
 import { RegisterService } from './services/register.service';
 import { PeliculasController } from './controllers/peliculas.controller';
 import { PeliculasService } from './services/peliculas.service';
+import { ImageService } from 'src/administrador/services/image.service';
+import { ImageController } from 'src/administrador/controllers/image.controller';
 
 @Module({
   imports: [
@@ -16,8 +18,8 @@ import { PeliculasService } from './services/peliculas.service';
       signOptions: {expiresIn: '1h'},
     }),
   ],
-  controllers: [LoginController, RegisterController, PeliculasController],
-  providers: [LoginService, RegisterService, PeliculasService, DatabaseService, JwtMiddlewareGuard],
+  controllers: [LoginController, RegisterController, PeliculasController, ImageController],
+  providers: [LoginService, RegisterService, PeliculasService, DatabaseService, JwtMiddlewareGuard, ImageService],
   exports: [DatabaseService, JwtMiddlewareGuard, JwtModule]
 })
 export class CommonModule {}
