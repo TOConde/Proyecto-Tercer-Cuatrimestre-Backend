@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { DatabaseService } from "./db.service";
 import commonQueries from "../queries/common.queries";
-import { ResultSetHeader, RowDataPacket } from "mysql2";
+import { RowDataPacket } from "mysql2";
 import axios from "axios";
 
 @Injectable()
@@ -61,5 +61,19 @@ export class PeliculasService {
             commonQueries.deleteMovie,
             [id]
         );
+    }
+
+    async editMovie (id: number, pelicula: any): Promise<void> {
+        await this.dbService.executeQuery(
+            commonQueries.editMovie,
+            [
+                pelicula.titulo,
+                pelicula.sinopsis,
+                pelicula.fechaEstreno,
+                pelicula.duracion,
+                pelicula.urlVideo,
+                id
+            ]
+        )
     }
 }

@@ -1,4 +1,4 @@
-import {Controller, Delete, Get, Param} from '@nestjs/common';
+import {Body, Controller, Delete, Get, Param, Put} from '@nestjs/common';
 import { PeliculasService } from '../services/peliculas.service';
 
 @Controller('/peliculas')
@@ -16,5 +16,10 @@ export class PeliculasController {
         const url_image_delete = pelicula.url_image_delete;
 
         return await this.peliculasService.deleteMovie(Number(id), url_image_delete);
+    }
+
+    @Put(':id')
+    async editMovie(@Param('id') id: string, @Body() pelicula: any) {
+        return await this.peliculasService.editMovie(Number(id), pelicula)
     }
 }
