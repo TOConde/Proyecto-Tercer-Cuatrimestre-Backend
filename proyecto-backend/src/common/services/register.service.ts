@@ -17,12 +17,16 @@ export class RegisterService {
 
   async register(user: any): Promise<any> {
     const encriptedPassword = await this.generateHash(user.password);
+    const currentDate = new Date().toISOString().slice(0, 19).replace('T', ' ');
 
     await this.dbService.executeQuery(userQueries.registerUser, [
       user.email,
       encriptedPassword,
       1,
       2,
+      0,
+      currentDate,
+      0
     ]);
 
     return user.email;
