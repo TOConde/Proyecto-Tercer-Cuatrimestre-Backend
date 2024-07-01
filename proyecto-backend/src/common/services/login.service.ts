@@ -27,6 +27,7 @@ export class LoginService {
         }
 
         const dbUser = {
+            userID: resultQuery[0].usuarioID,
             email: resultQuery[0].email,
             password: resultQuery[0].password,
             role: resultQuery[0].codigo,
@@ -45,7 +46,7 @@ export class LoginService {
     }
 
     getAccesToken(user: any) {
-        const payload = { email: user.email, role: user.role };
+        const payload = { userID: user.userID, email: user.email, role: user.role };
         return {
             accessToken: this.jwtService.sign(payload),
         };
