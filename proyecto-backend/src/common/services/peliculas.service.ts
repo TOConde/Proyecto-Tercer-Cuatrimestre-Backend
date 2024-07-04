@@ -40,29 +40,11 @@ export class PeliculasService {
         return pelicula
     }
 
-    private async deleteImageFromImgbb(url_image_delete: string): Promise<void> { //no funciona :/
-        try {
-            console.log('url de la imagen:',url_image_delete) //creo que la url es la correcta
-            const response = await axios.delete(url_image_delete);
-            console.log(response);            
-        } catch (error) {
-            console.log('Error al eliminar la imagen en ImgBB:', error)
-        }
-    }
-
-    async deleteMovie(id: number, url_image_delete: string): Promise<void> { //agregar una columna a base de datos para activo o inactivo y controlar la eliminacion asi(evitamos borrar la imagen) 
-        console.log("eliminado pelicula")
-        await this.deleteImageFromImgbb(url_image_delete); 
-
-        /* await this.dbService.executeQuery( //borramos las dependecias de pelicula en pelicula_generos
-            commonQueries.deletePeliculaGenero,
-            [id]
-        );
-
+    async deleteMovie(id: number, url_image_delete: string): Promise<void> {
         await this.dbService.executeQuery(
             commonQueries.deleteMovie,
             [id]
-        ); */
+        );
     }
 
     async editMovie (id: number, pelicula: any): Promise<void> {
