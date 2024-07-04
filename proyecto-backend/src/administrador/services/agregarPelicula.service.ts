@@ -34,6 +34,7 @@ export class AgregarPeliculaService {
         imagenPelicula.data.url,
         imagenPelicula.data.delete_url,
         imagenPelicula.data.display_url,
+        1
       ]);
 
       const peliculaID = result.insertId;

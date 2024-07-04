@@ -25,6 +25,6 @@ export class PeliculasController {
 
     @Put(':id')
     async editMovie(@Param('id') id: string, @Body() pelicula: any) {
-        return await this.peliculasService.editMovie(Number(id), pelicula)
+        return await this.peliculasService.editMovie(Number(id), pelicula);
     }
 }

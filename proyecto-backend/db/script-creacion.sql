@@ -27,17 +27,18 @@ create table if not exists usuarios (
 	constraint FK_usuarios_roles foreign key (rolID) references roles(rolID)
 );
 
-create table if not exists peliculas (
-    peliculaID INTEGER auto_increment,
-    titulo VARCHAR(100) not NULL,
-    sinopsis TEXT not NULL,
+CREATE TABLE IF NOT EXISTS peliculas (
+    peliculaID INTEGER AUTO_INCREMENT,
+    titulo VARCHAR(100) NOT NULL,
+    sinopsis TEXT NOT NULL,
     fechaEstreno DATE,
     duracion INTEGER,
     urlVideo VARCHAR(255),
-    url_image VARCHAR(255) not NULL,
-    url_image_delete VARCHAR(255) not NULL,
-    display_url_image VARCHAR(255) not NULL,
-    primary key (peliculaID)
+    url_image VARCHAR(255) NOT NULL,
+    url_image_delete VARCHAR(255) NOT NULL,
+    display_url_image VARCHAR(255) NOT NULL,
+    activo TINYINT(1) DEFAULT 1,
+    PRIMARY KEY (peliculaID)
 );
 
 create table if not exists generos (
