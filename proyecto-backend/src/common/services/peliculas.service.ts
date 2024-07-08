@@ -2,7 +2,6 @@ import { Injectable } from "@nestjs/common";
 import { DatabaseService } from "./db.service";
 import commonQueries from "../queries/common.queries";
 import { RowDataPacket } from "mysql2";
-import axios from "axios";
 
 @Injectable()
 export class PeliculasService {
@@ -37,7 +36,16 @@ export class PeliculasService {
             display_url_image: resultQuery[0].display_url_image,
         };
 
-        return pelicula
+        return pelicula;
+    }
+
+    async searchByTitle(title: string): Promise<RowDataPacket[]> {
+        const resultQuery: RowDataPacket[] = await this.dbService.executeSelect(
+            commonQueries.selectMoviesByTitulo,
+            [title]
+        );
+
+        return resultQuery;
     }
 
     async deleteMovie(id: number, url_image_delete: string): Promise<void> {
