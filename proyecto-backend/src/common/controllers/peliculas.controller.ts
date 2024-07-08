@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Put, Query } from '@nestjs/common';
 import { PeliculasService } from '../services/peliculas.service';
 
 @Controller('/peliculas')
@@ -13,6 +13,11 @@ export class PeliculasController {
     @Get('/:id')
     async getMovieById(@Param('id') id: string) {
         return await this.peliculasService.getById(Number(id));
+    }
+
+    @Get('/title/search')
+    async searchByTitle(@Query('title') title: string) {
+        return await this.peliculasService.searchByTitle(title);
     }
 
     @Delete(':id')
