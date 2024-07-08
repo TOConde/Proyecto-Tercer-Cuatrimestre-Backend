@@ -1,11 +1,15 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import userQueries from './queries/user.queries';
 import { RowDataPacket } from 'mysql2';
 import { DatabaseService } from 'src/common/services/db.service';
+import { ImageService } from 'src/administrador/services/image.service';
 
 @Injectable()
 export class UsuarioService {
-    constructor(private dbService: DatabaseService) {}
+    constructor(
+        private readonly dbService: DatabaseService,
+        private readonly imageService: ImageService
+    ) { }
 
     async getAll() {
         const resultQuery: RowDataPacket[] = await this.dbService.executeSelect(
@@ -22,27 +26,27 @@ export class UsuarioService {
         return usuarios;
     }
 
-    async getUserById (id: number): Promise<RowDataPacket[]> {
+    async getUserById(id: number): Promise<RowDataPacket[]> {
         const resultQuery: RowDataPacket[] = await this.dbService.executeSelect(
             userQueries.selectUserById,
             [id]);
 
-            const usuario: any = {
-                email: resultQuery[0].email,
-                nombre: resultQuery[0].nombre,
-                edad: resultQuery[0].edad,
-                pais: resultQuery[0].pais,
-                idioma: resultQuery[0].idioma,
-                fechaDeSuscripcion: resultQuery[0].fechaDeSuscripcion,
-                tipoDeSuscripcion: resultQuery[0].tipoDeSuscripcion,
-                recibirCorreos: resultQuery[0].recibirCorreos,
-                urlUserImage: resultQuery[0].url_userImage,
-                urlUserBanner: resultQuery[0].url_userBanner
-            };
+        const usuario: any = {
+            email: resultQuery[0].email,
+            nombre: resultQuery[0].nombre,
+            edad: resultQuery[0].edad,
+            pais: resultQuery[0].pais,
+            idioma: resultQuery[0].idioma,
+            fechaDeSuscripcion: resultQuery[0].fechaDeSuscripcion,
+            tipoDeSuscripcion: resultQuery[0].tipoDeSuscripcion,
+            recibirCorreos: resultQuery[0].recibirCorreos,
+            urlUserImage: resultQuery[0].url_userImage,
+            urlUserBanner: resultQuery[0].url_userBanner
+        };
         return usuario;
     }
 
-    async editUserProfile (id: number, body: any): Promise<void> {
+    async editUserProfile(id: number, body: any): Promise<void> {
         await this.dbService.executeQuery(
             userQueries.editUserProfile,
             [
@@ -54,7 +58,7 @@ export class UsuarioService {
         )
     }
 
-    async editUserSubscription (id: number, body: { tipoDeSuscripcion: number }): Promise<void> {
+    async editUserSubscription(id: number, body: { tipoDeSuscripcion: number }): Promise<void> {
         await this.dbService.executeQuery(
             userQueries.editUserSubscription,
             [
@@ -64,7 +68,7 @@ export class UsuarioService {
         )
     }
 
-    async editUserNotifications (id: number, body: { recibirCorreos: number}) : Promise<void> {
+    async editUserNotifications(id: number, body: { recibirCorreos: number }): Promise<void> {
         await this.dbService.executeQuery(
             userQueries.editUserNotifications,
             [
@@ -73,5 +77,23 @@ export class UsuarioService {
             ]
         )
     }
+
+    async editUserImg(id: number, file: Express.Multer.File): Promise<void> {
+
+        try {
+            const imgName = `perfil${id}`;
+            const imagenUsuario = await this.imageService.upload(file, imgName);
+            const url_userImage = imagenUsuario.data.url
+
+            await this.dbService.executeQuery(
+                userQueries.editUserImg,
+                [
+                    url_userImage,
+                    id
+                ]
+            );
+        } catch (error) {
+            throw new InternalServerErrorException('Error al cargar la imagen');
+        }
+    }
 }
- 

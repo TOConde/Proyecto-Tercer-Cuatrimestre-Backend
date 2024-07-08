@@ -1,6 +1,7 @@
-import { Body, Controller, Get, Param, Put, Req, UseGuards } from "@nestjs/common";
+import { BadRequestException, Body, Controller, Get, Param, Put, Req, UploadedFile, UseGuards, UseInterceptors } from "@nestjs/common";
 import { JwtMiddlewareGuard } from "src/common/middleware/auth-guard";
 import { UsuarioService } from "./usuario.service";
+import { FileInterceptor } from "@nestjs/platform-express";
 
 
 @Controller('/usuarios')
@@ -36,5 +37,23 @@ export class UsuarioController {
   @Put('/notifications/:id')
   async editUserNotifications(@Param('id') id: string, @Body() body: any) {
     return await this.usuarioService.editUserNotifications(Number(id), body);
+  }
+
+  @Put('/image/:id')
+  @UseInterceptors(FileInterceptor('img'))
+  async editUserImg(
+    @UploadedFile() file: Express.Multer.File,
+    @Param('id') id: string,
+  ) {
+    if (!file) {
+      throw new BadRequestException('Inserte una imagen');
+    }
+
+    try {
+      await this.usuarioService.editUserImg(Number(id), file );
+      return { message: `Su imagen se cambio con exito.` };
+    } catch (error) {
+      throw new BadRequestException('Error al cambiar de imagen de usuario.')
+    }
   }
 }

@@ -13,7 +13,9 @@ const userQueries = {
 
     editUserSubscription: 'update usuarios set tipoDeSuscripcion = ? where usuarioID = ?;',
 
-    editUserNotifications: 'update usuarios set recibirCorreos = ? where usuarioID = ?;'
+    editUserNotifications: 'update usuarios set recibirCorreos = ? where usuarioID = ?;',
+
+    editUserImg: 'update usuarios set url_userImage = ? where usuarioID = ?;'
 }
 
 export default userQueries;
