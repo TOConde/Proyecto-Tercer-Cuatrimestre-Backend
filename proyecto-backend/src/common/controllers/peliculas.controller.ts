@@ -20,6 +20,11 @@ export class PeliculasController {
         return await this.peliculasService.searchByTitle(title);
     }
 
+    @Get('/genre/search')
+    async getMovieByGenre(@Query('genre') genre: string) {
+        return await this.peliculasService.getMovieByGenre(genre);
+    }
+
     @Delete(':id')
     async deleteMovie(@Param('id') id: string) {
         const pelicula = await this.peliculasService.getById(Number(id));
