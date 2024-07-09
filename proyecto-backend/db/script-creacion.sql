@@ -40,6 +40,7 @@ CREATE TABLE IF NOT EXISTS peliculas (
     activo TINYINT(1) DEFAULT 1,
     PRIMARY KEY (peliculaID)
 );
+CREATE INDEX idx_titulo ON peliculas (titulo); /* facilita la busqueda por titulo */
 
 create table if not exists generos (
     generoID INTEGER AUTO_INCREMENT,
