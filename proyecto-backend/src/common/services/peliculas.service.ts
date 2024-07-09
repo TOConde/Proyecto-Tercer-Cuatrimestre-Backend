@@ -48,6 +48,15 @@ export class PeliculasService {
         return resultQuery;
     }
 
+    async getMovieByGenre(genre: string): Promise<RowDataPacket[]> {
+        const resultQuery: RowDataPacket[] = await this.dbService.executeSelect(
+            commonQueries.selectMoviesByGenero,
+            [genre]
+        );
+
+        return resultQuery;
+    }
+
     async deleteMovie(id: number, url_image_delete: string): Promise<void> {
         await this.dbService.executeQuery(
             commonQueries.deleteMovie,
