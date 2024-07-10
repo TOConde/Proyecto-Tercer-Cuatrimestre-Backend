@@ -9,7 +9,7 @@ export class AgregarPeliculaService {
   constructor(
     private readonly dbService: DatabaseService,
     private readonly imageService: ImageService
-  ) {}
+  ) { }
 
   async agregarPelicula(pelicula: any, generos: number[]): Promise<string> {
     if (!pelicula.titulo || !pelicula.sinopsis || !pelicula.duracion || !pelicula.fechaEstreno || !pelicula.urlVideo) {
@@ -55,10 +55,17 @@ export class AgregarPeliculaService {
 
   async getGeneros() {
     const resultQuery: RowDataPacket[] = await this.dbService.executeSelect(
-        adminQueries.selectAllGeneros,
-        []);
+      adminQueries.selectAllGeneros,
+      []);
     return resultQuery;
   }
-  
+
+  async getGenerosById(id: number): Promise<any> {
+    const resultQuery: RowDataPacket[] = await this.dbService.executeSelect(
+      adminQueries.selectGenerosById,
+      [id]);
+    return resultQuery;
+  }
+
 }
 

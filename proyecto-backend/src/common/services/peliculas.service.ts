@@ -77,4 +77,29 @@ export class PeliculasService {
             ]
         )
     }
+
+    async editMovieGenres (peliculaID: number, generos: number[]): Promise<void> {
+        await this.dbService.executeQuery(
+            commonQueries.deleteGeneroPelicula,
+            [peliculaID, generos]
+        )
+
+        for (const generoID of generos) {
+            const existeRelacion = await this.existeRelacionPeliculaGenero(peliculaID, generoID);
+            if (!existeRelacion) {
+                await this.dbService.executeQuery(
+                    commonQueries.agregarGeneroPelicula,
+                    [peliculaID, generoID]
+                )
+            }
+        }
+    }
+
+    async existeRelacionPeliculaGenero(peliculaID: number, generoID: number): Promise<Boolean> {
+        const resultQuery: RowDataPacket[] = await this.dbService.executeSelect(
+            commonQueries.selectRelacionPeliculaGenero,
+            [peliculaID, generoID]
+        );
+        return resultQuery.length > 0;
+    }
 }

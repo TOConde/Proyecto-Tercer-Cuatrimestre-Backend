@@ -1,8 +1,9 @@
-import { 
+import {
   BadRequestException,
   Body,
   Controller,
   Get,
+  Param,
   Post,
   UploadedFile,
   UseInterceptors
@@ -19,7 +20,7 @@ export class AgregarPeliculaController {
   @UseInterceptors(FileInterceptor('img'))
   async agregarPelicula(
     @UploadedFile() file: Express.Multer.File,
-    @Body() body: { titulo: string, sinopsis: string, duracion: number, fechaEstreno: Date, urlVideo: string, generos: string}
+    @Body() body: { titulo: string, sinopsis: string, duracion: number, fechaEstreno: Date, urlVideo: string, generos: string }
   ): Promise<{ message: string }> {
     if (!file) {
       throw new BadRequestException('Inserte una imagen');
@@ -48,7 +49,12 @@ export class AgregarPeliculaController {
   }
 
   @Get('/generos')
-    async getGeneros() {
-        return await this.agregarPeliculaService.getGeneros();
-    }
+  async getGeneros() {
+    return await this.agregarPeliculaService.getGeneros();
+  }
+
+  @Get('/generos/:id')
+  async getGenerosById(@Param('id') id: string) {
+    return await this.agregarPeliculaService.getGenerosById(Number(id));
+  }
 }

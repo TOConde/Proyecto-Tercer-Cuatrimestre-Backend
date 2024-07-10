@@ -35,6 +35,10 @@ export class PeliculasController {
 
     @Put(':id')
     async editMovie(@Param('id') id: string, @Body() pelicula: any) {
-        return await this.peliculasService.editMovie(Number(id), pelicula);
+        await this.peliculasService.editMovie(Number(id), pelicula);
+
+        if (pelicula.generos && pelicula.generos.length > 0) {
+            await this.peliculasService.editMovieGenres(Number(id), pelicula.generos);
+        }
     }
 }
