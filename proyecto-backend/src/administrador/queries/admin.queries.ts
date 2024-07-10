@@ -3,7 +3,7 @@ const adminQueries = {
     agregarGeneroPelicula: 'insert into pelicula_generos (peliculaID, generoID) values (?, ?)',
 
     selectAllGeneros: 'select * from generos;',
-    selectGenerosById: 'SELECT p.peliculaID, p.titulo, g.nombreGenero FROM peliculas p JOIN pelicula_generos pg ON p.peliculaID = pg.peliculaID JOIN generos g ON pg.generoID = g.generoID WHERE p.peliculaID = ?;'
+    selectGenerosById: 'SELECT p.peliculaID, p.titulo, g.generoID, g.nombreGenero FROM peliculas p JOIN pelicula_generos pg ON p.peliculaID = pg.peliculaID JOIN generos g ON pg.generoID = g.generoID WHERE p.peliculaID = ?;'
 }
 
 export default adminQueries;
