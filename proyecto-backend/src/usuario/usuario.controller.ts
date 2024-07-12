@@ -62,6 +62,11 @@ export class UsuarioController {
     return await this.usuarioService.editUserPassword(Number(id), body);
   }
 
+  @Put('/email/:id')
+  async editUserEmail(@Param('id') id: string, @Body() body: any) {
+    return await this.usuarioService.editUserEmail(Number(id), body);
+  }
+
   @Post('/verification/:id')
   @HttpCode(200)
   async verificarPassword(@Param('id') id: string, @Body() body: any) {
