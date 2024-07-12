@@ -17,6 +17,8 @@ const userQueries = {
 
     editUserNotifications: 'update usuarios set recibirCorreos = ? WHERE usuarioID = ?;',
 
+    editUserEmail: 'update usuarios set email = ? WHERE usuarioID = ?',
+
     editUserPassword: 'update usuarios set password = ? WHERE usuarioID = ?;',
 
     editUserImg: 'update usuarios set url_userImage = ? WHERE usuarioID = ?;'

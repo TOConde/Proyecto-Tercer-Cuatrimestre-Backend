@@ -7,7 +7,7 @@ import { ImageService } from 'src/administrador/services/image.service';
 
 @Injectable()
 export class UsuarioService {
-    salt: string = '$2a$08$W59jWcwio1TiLx4A8iRyTO'
+    private readonly salt: string = '$2a$08$W59jWcwio1TiLx4A8iRyTO'
     constructor(
         private readonly dbService: DatabaseService,
         private readonly imageService: ImageService
@@ -104,8 +104,6 @@ export class UsuarioService {
     }
 
     async editUserPassword(id: number, body: { password: string }): Promise<boolean> {
-
-        
         const password = await this.generateHash(body.password);
 
         try {
@@ -119,6 +117,21 @@ export class UsuarioService {
             return true
         } catch (e) {
             throw new InternalServerErrorException('Error al cambiar la contraseña');
+        }
+    }
+
+    async editUserEmail(id: number, body: { email: string }): Promise<boolean> {
+        try {
+            await this.dbService.executeQuery(
+                userQueries.editUserEmail,
+                [
+                    body.email,
+                    id
+                ]
+            );
+            return true
+        } catch (e) {
+            throw new InternalServerErrorException('Error al cambiar el email');
         }
     }
 
