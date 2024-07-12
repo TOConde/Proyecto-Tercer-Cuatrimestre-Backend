@@ -1,15 +1,22 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import userQueries from './queries/user.queries';
 import { RowDataPacket } from 'mysql2';
+import * as bcrypt from 'bcrypt'
 import { DatabaseService } from 'src/common/services/db.service';
 import { ImageService } from 'src/administrador/services/image.service';
 
 @Injectable()
 export class UsuarioService {
+    salt: string = '$2a$08$W59jWcwio1TiLx4A8iRyTO'
     constructor(
         private readonly dbService: DatabaseService,
         private readonly imageService: ImageService
     ) { }
+
+    async generateHash(pw: string) {
+        const hash = await bcrypt.hash(pw, this.salt);
+        return hash;
+    }
 
     async getAll() {
         const resultQuery: RowDataPacket[] = await this.dbService.executeSelect(
@@ -79,7 +86,6 @@ export class UsuarioService {
     }
 
     async editUserImg(id: number, file: Express.Multer.File): Promise<void> {
-
         try {
             const imgName = `perfil${id}`;
             const imagenUsuario = await this.imageService.upload(file, imgName);
@@ -94,6 +100,44 @@ export class UsuarioService {
             );
         } catch (error) {
             throw new InternalServerErrorException('Error al cargar la imagen');
+        }
+    }
+
+    async editUserPassword(id: number, body: { password: string }): Promise<boolean> {
+
+        
+        const password = await this.generateHash(body.password);
+
+        try {
+            await this.dbService.executeQuery(
+                userQueries.editUserPassword,
+                [
+                    password,
+                    id
+                ]
+            );
+            return true
+        } catch (e) {
+            throw new InternalServerErrorException('Error al cambiar la contraseña');
+        }
+    }
+
+    async verificarPassword(id: number, body: { password: string }): Promise<boolean> {
+
+        const resultQuery: RowDataPacket[] = await this.dbService.executeSelect(
+            userQueries.selectUserByIdPassword,
+            [id],
+        );
+        const dbPassword = resultQuery[0].password;
+        const isValidPassword = await bcrypt.compare(
+            body.password,
+            dbPassword
+        );
+
+        if (!isValidPassword) {
+            return false;
+        } else {
+            return true
         }
     }
 }

@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, Get, Param, Put, Req, UploadedFile, UseGuards, UseInterceptors } from "@nestjs/common";
+import { BadRequestException, Body, Controller, Get, HttpCode, Param, Post, Put, Req, UploadedFile, UseGuards, UseInterceptors } from "@nestjs/common";
 import { JwtMiddlewareGuard } from "src/common/middleware/auth-guard";
 import { UsuarioService } from "./usuario.service";
 import { FileInterceptor } from "@nestjs/platform-express";
@@ -50,10 +50,22 @@ export class UsuarioController {
     }
 
     try {
-      await this.usuarioService.editUserImg(Number(id), file );
+      await this.usuarioService.editUserImg(Number(id), file);
       return { message: `Su imagen se cambio con exito.` };
     } catch (error) {
       throw new BadRequestException('Error al cambiar de imagen de usuario.')
     }
   }
+
+  @Put('/password/:id')
+  async editUserPassword(@Param('id') id: string, @Body() body: any) {
+    return await this.usuarioService.editUserPassword(Number(id), body);
+  }
+
+  @Post('/verification/:id')
+  @HttpCode(200)
+  async verificarPassword(@Param('id') id: string, @Body() body: any) {
+    return await this.usuarioService.verificarPassword(Number(id), body);
+  }
 }
+
