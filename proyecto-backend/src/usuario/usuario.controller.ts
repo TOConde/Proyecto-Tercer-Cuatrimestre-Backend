@@ -19,6 +19,11 @@ export class UsuarioController {
     return await this.usuarioService.getUserById(Number(id));
   }
 
+  @Get('/generos/:id')
+  async getUserGeneros(@Param('id') id: string) {
+    return await this.usuarioService.getUserGeneros(Number(id));
+  }
+
   @Get()
   async getAll() {
     // return await this.usuarioService.getAll();
@@ -37,6 +42,11 @@ export class UsuarioController {
   @Put('/notifications/:id')
   async editUserNotifications(@Param('id') id: string, @Body() body: any) {
     return await this.usuarioService.editUserNotifications(Number(id), body);
+  }
+
+  @Put('/preferences/:id')
+  async editUserPreferences(@Param('id') id: string, @Body() body: any) {
+    return await this.usuarioService.editUserPreferences(Number(id), body);
   }
 
   @Put('/image/:id')

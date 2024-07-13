@@ -53,6 +53,16 @@ export class UsuarioService {
         return usuario;
     }
 
+    async getUserGeneros(id: number): Promise<RowDataPacket[]> {
+        const resultQuery: RowDataPacket[] = await this.dbService.executeSelect(
+            userQueries.selectUserGeneros,
+            [
+                id
+            ]
+        );
+        return resultQuery;
+    }
+
     async editUserProfile(id: number, body: any): Promise<void> {
         await this.dbService.executeQuery(
             userQueries.editUserProfile,
@@ -82,7 +92,68 @@ export class UsuarioService {
                 body.recibirCorreos,
                 id
             ]
-        )
+        );
+    }
+
+    async editUserPreferences(id: number, body: { idioma: string, generos: number[] }): Promise<boolean> {
+        try {
+            this.editUserIdioma(id, body.idioma);
+            this.editUserGeneros(id, body.generos);
+            return true
+        } catch (e) {
+            throw new InternalServerErrorException('Error al modificar preferencias')
+        }
+    }
+
+    async editUserIdioma(id: number, idioma: string): Promise<void> {
+        await this.dbService.executeQuery(
+            userQueries.editUserIdioma,
+            [
+                idioma,
+                id
+            ]
+        );
+    }
+
+    async editUserGeneros(id: number, generos: number[]): Promise<void> {
+
+        if (generos.length === 0) {
+            await this.dbService.executeQuery(
+                userQueries.deleteAllGenerosUsuario,
+                [
+                    id
+                ]
+            );
+        } else {
+            await this.dbService.executeQuery(
+                userQueries.deleteGenerosUsuario,
+                [
+                    id,
+                    generos
+                ]
+            );
+
+            for (const generoID of generos) {
+                const existeRelacion = await this.existeRelacionUsuarioGenero(id, generoID);
+                if (!existeRelacion) {
+                    await this.dbService.executeQuery(
+                        userQueries.agregarGeneroUsuario,
+                        [
+                            id, 
+                            generoID
+                        ]
+                    )
+                }
+            };
+        };
+    }
+
+    async existeRelacionUsuarioGenero(id: number, generoID: number): Promise<Boolean> {
+        const resultQuery: RowDataPacket[] = await this.dbService.executeSelect(
+            userQueries.selectRelacionUsuarioGenero,
+            [id, generoID]
+        );
+        return resultQuery.length > 0;
     }
 
     async editUserImg(id: number, file: Express.Multer.File): Promise<void> {
