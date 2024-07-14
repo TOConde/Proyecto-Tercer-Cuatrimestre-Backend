@@ -9,7 +9,7 @@ const adminQueries = {
     selectCantidadUsersActivos: 'SELECT COUNT(*) AS count FROM usuarios where activo = 1 AND rolID = 2;',
     selectPromedioEdad: 'SELECT AVG(edad) AS avg FROM usuarios where activo = 1 AND rolID = 2;',
     selectNacionPopular: 'SELECT pais, COUNT(*) AS cantidad FROM usuarios GROUP BY pais ORDER BY cantidad DESC LIMIT 1;',
-    selectSuscripcionesMes: 'SELECT DATE_FORMAT(fechaDeSuscripcion, "%Y-%m") AS Anio, COUNT(usuarioID) AS CantidadUsuariosRegistrados FROM usuarios WHERE fechaDeSuscripcion IS NOT NULL AND fechaDeSuscripcion >= date_sub(curdate(), INTERVAL 12 MONTH) GROUP BY DATE_FORMAT(fechaDeSuscripcion, "%Y-%m") ORDER BY Anio;',
+    selectSuscripcionesMes: 'SELECT DATE_FORMAT(fechaDeSuscripcion, "%Y-%m") AS Anio, COUNT(usuarioID) AS CantidadUsuariosRegistrados FROM usuarios WHERE fechaDeSuscripcion IS NOT NULL AND fechaDeSuscripcion >= date_sub(curdate(), INTERVAL 11 MONTH) GROUP BY DATE_FORMAT(fechaDeSuscripcion, "%Y-%m") ORDER BY Anio;',
     selectTipoSuscripcion: 'SELECT SUM(tipoDeSuscripcion = 0) AS cantidadUsuarioFree, SUM(tipoDeSuscripcion = 1) AS cantidadUsuarioPremium FROM usuarios;',
 }
 
