@@ -21,6 +21,7 @@ create table if not exists usuarios (
 	idioma VARCHAR(50),
 	fechaDeSuscripcion DATE,
 	tipoDeSuscripcion tinyint,
+    recibirCorreos BOOLEAN DEFAULT true,
 	url_userImage VARCHAR(255),
 	ulr_userBanner VARCHAR(255),
 	primary key (usuarioID),
