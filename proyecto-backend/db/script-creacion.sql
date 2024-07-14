@@ -48,12 +48,6 @@ create table if not exists generos (
     primary key (generoID)
 );
 
-create table if not exists actores (
-    actorID INTEGER AUTO_INCREMENT,
-    nombreActor VARCHAR(50) NOT NULL,
-    primary key (actorID)
-);
-
 create table if not exists pelicula_generos (
     peliculaID INTEGER,
     generoID INTEGER,
@@ -68,13 +62,4 @@ create table if not exists usuario_generos (
     primary key (usuarioID, generoID),
     CONSTRAINT FK_UserGen_Usuario FOREIGN KEY (usuarioID) REFERENCES usuarios(usuarioID),
     CONSTRAINT FK_UserGen_Genero FOREIGN KEY (generoID) REFERENCES generos(generoID)    
-);
-
-
-create table if not exists pelicula_actores (
-    peliculaID INTEGER,
-    actorID INTEGER,
-    primary key (peliculaID, actorID),
-    CONSTRAINT FK_ActPel_Pelicula FOREIGN KEY (peliculaID) REFERENCES peliculas(peliculaID),
-    CONSTRAINT FK_ActPel_Actor FOREIGN KEY (actorID) REFERENCES actores(actorID)
 );
